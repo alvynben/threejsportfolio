@@ -1,0 +1,14 @@
+{
+  "name": "threejstest",
+  "version": "1.0.0",
+  "description": "Testing Threejs",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ben",
+  "license": "ISC",
+  "dependencies": {
+    "three": "^0.136.0"
+  }
+}
