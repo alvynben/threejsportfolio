@@ -1,4 +1,11 @@
-import * as THREE from "./node_modules/three/src/Three.js";
+import * as THREE from "three/src/Three.js";
+import {
+  CSS3DRenderer,
+  CSS3DObject,
+} from "three/examples/jsm/renderers/CSS3DRenderer";
+import html from "./index.html";
+import css from "./styles.css";
+import keys from "./keys.png";
 
 THREE.Cache.enabled = true;
 const scene = new THREE.Scene();
@@ -20,8 +27,8 @@ const camera = new THREE.OrthographicCamera(
   cameraWidth / 2,
   cameraHeight / 2,
   cameraHeight / -2,
-  0,
-  1000
+  -2000,
+  2000
 );
 camera.position.set(300, 200, -100);
 camera.lookAt(0, 10, 0);
@@ -52,6 +59,9 @@ renderer.setPixelRatio(window.devicePixelRatio);
 renderer.shadowMap.enabled = true;
 // renderer.render(scene, camera);
 
+const cssRenderer = new CSS3DRenderer();
+cssRenderer.setSize(window.innerWidth, window.innerHeight);
+
 document.body.appendChild(renderer.domElement);
 
 const car = createCar();
@@ -59,10 +69,11 @@ scene.add(car);
 
 const plane = new THREE.Mesh(
   new THREE.PlaneGeometry(10000, 10000),
-  new THREE.MeshBasicMaterial({ color: "#a2a0ff" })
+  new THREE.MeshBasicMaterial({ color: "#009a17" })
 );
 plane.receiveShadow = true;
 plane.rotation.x = -Math.PI / 2;
+plane.position.y = -1;
 scene.add(plane);
 
 function getSectionOneTexture() {
@@ -71,33 +82,33 @@ function getSectionOneTexture() {
   canvas.height = 1000;
   const context = canvas.getContext("2d");
 
-  context.fillStyle = "#a2a0ff";
+  context.fillStyle = "#e7b88d";
   context.fillRect(0, 0, 1000, 1000);
 
-  context.strokeRect(0,0,1000,1000);
+  context.fillStyle = "#804c36";
+  context.strokeRect(0, 0, 1000, 1000);
 
   context.fillStyle = "#000000";
   // context.fillRect(8, 8, 48, 24);
 
   const img = new Image();
   img.onload = drawActualImageSize;
-  img.src = './keys.png';
+  img.src = keys;
 
   function drawActualImageSize() {
     context.drawImage(img, 500, 500);
   }
 
-  context.font = "100px monospace"
-  context.fillText("IT BEGINS...", 100,300);
-  context.fillText("<-----", 100,500);
+  context.font = "100px monospace";
+  context.fillText("IT BEGINS...", 100, 300);
+  context.fillText("<-----", 100, 500);
 
   context.font = "30px monospace";
   context.fillText("Alvin Ben Abraham", 100, 600);
-  context.fillText("Welcome To My Site!", 100, 650)
+  context.fillText("Welcome To My Site!", 100, 650);
 
   context.fillText("Linkedin: linkedin.com/in/alvinbenabraham", 100, 800);
   context.fillText("[Use arrow keys to control the car]", 100, 200);
-
 
   return new THREE.CanvasTexture(canvas);
 }
@@ -115,18 +126,18 @@ function getRoadTexture() {
   const canvas = document.createElement("canvas");
   canvas.width = 500;
   canvas.height = 1000;
-  const context = canvas.getContext('2d');
+  const context = canvas.getContext("2d");
 
   context.fillStyle = "#000";
-  context.fillRect(0,0,500,1000);
+  context.fillRect(0, 0, 500, 1000);
 
   return new THREE.CanvasTexture(canvas);
 }
 
 const road = new THREE.Mesh(
-  new THREE.PlaneGeometry(500,1000),
-  new THREE.MeshBasicMaterial({map: getRoadTexture()})
-)
+  new THREE.PlaneGeometry(500, 1000),
+  new THREE.MeshBasicMaterial({ map: getRoadTexture() })
+);
 road.rotation.x = -Math.PI / 2;
 road.position.z = 800;
 road.position.y = 1;
@@ -141,28 +152,27 @@ function getSectionTwoTexture() {
   context.fillStyle = "#a2a0ff";
   context.fillRect(0, 0, 1000, 1000);
 
-  context.strokeRect(0,0,1000,1000);
+  context.strokeRect(0, 0, 1000, 1000);
 
   context.fillStyle = "#000000";
   // context.fillRect(8, 8, 48, 24);
 
   const img = new Image();
   img.onload = drawActualImageSize;
-  img.src = './keys.png';
+  img.src = "./keys.png";
 
   function drawActualImageSize() {
     context.drawImage(img, 500, 500);
   }
 
-  context.font = "100px monospace"
-  context.fillText("Projects", 100,300);
+  context.font = "100px monospace";
+  context.fillText("Projects", 100, 300);
 
-  context.font = "30px monospace";
-  context.fillText("(1) Interseed - app.interseed.co", 100, 600);
-  context.fillText("(2) Voca SG - voca.sg", 100, 650)
+  context.font = "40px monospace";
+  context.fillText("(1) Interseed - app.interseed.co", 100, 400);
+  context.fillText("(2) Voca SG - voca.sg", 100, 500);
 
   context.fillText("View others @ github.com/alvynben", 100, 800);
-
 
   return new THREE.CanvasTexture(canvas);
 }
@@ -186,22 +196,22 @@ function getInterseedTexture() {
   context.fillStyle = "#a2a0ff";
   context.fillRect(0, 0, 500, 500);
 
-  context.strokeRect(0,0,500,500);
+  context.strokeRect(0, 0, 500, 500);
 
   context.fillStyle = "#000000";
   // context.fillRect(8, 8, 48, 24);
 
   const img = new Image();
   img.onload = drawActualImageSize;
-  img.src = './keys.png';
+  img.src = "./keys.png";
 
   function drawActualImageSize() {
     context.drawImage(img, 500, 500);
   }
 
   context.font = "30px monospace";
-  context.fillText("Drive here to", 100, 200);
-  context.fillText("see Interseed", 100, 250)
+  context.fillText("Drive here to", 120, 200);
+  context.fillText("see Interseed", 120, 250);
 
   return new THREE.CanvasTexture(canvas);
 }
@@ -216,8 +226,44 @@ interseed.position.y = 1;
 interseed.position.z = 2200;
 scene.add(interseed);
 
+let divString =
+  "<div>" +
+  "<h1>This is an H1 Element.</h1>" +
+  '<span class="large">Hello Three.js cookbook</span>' +
+  "<textarea> And this is a textarea</textarea>" +
+  "</div>";
+
+function createCSS3DObject(s) {
+  // convert the string to dome elements
+  var wrapper = document.createElement("div");
+  wrapper.innerHTML = s;
+  var div = wrapper.firstChild;
+
+  // set some values on the div to style it, standard CSS
+  div.style.width = "375px";
+  div.style.height = "375px";
+  div.style.opacity = 1;
+  div.style["will-change"] = "all";
+  div.style.transition = "top 0.2s linear";
+  div.style.background = new THREE.Color(Math.random() * 0xffffff).getStyle();
+
+  // create a CSS3Dobject and return it.
+  var object = new CSS3DObject(div);
+  object.rotation.z = -Math.PI / 2;
+  object.rotation.x = -Math.PI / 2;
+  object.position.x = 0;
+  object.position.y = 10;
+  return object;
+}
+
+const cssElement = createCSS3DObject(divString);
+// cssElement.rotation.z = -Math.PI / 2;
+// cssElement.rotation.x = -Math.PI / 2;
+scene.add(cssElement);
+
 renderer.setClearColor(0xffffff, 1);
 renderer.render(scene, camera);
+cssRenderer.render(scene, camera);
 let accelerate = false;
 let reverse = false;
 let left;
@@ -232,6 +278,7 @@ window.addEventListener("keydown", function (event) {
   }
   if (event.key == "ArrowDown") {
     reverse = true;
+    event.preventDefault();
     return;
   }
   if (event.key == "ArrowLeft") {
@@ -273,6 +320,8 @@ let zMagnitude;
 let wasReversing = false;
 let wasAccelerating = false;
 const velocity = new THREE.Vector3(0, 0, 0);
+const oldObjectPosition = new THREE.Vector3();
+const newObjectPosition = new THREE.Vector3();
 velocity.clampLength(0.0, 1.0);
 
 function animation(timestamp) {
@@ -285,7 +334,6 @@ function animation(timestamp) {
   let angleOfCar = car.rotation.y;
   if (angleOfCar < 0) angleOfCar = angleOfCar + 2 * Math.PI;
 
-  const oldObjectPosition = new THREE.Vector3();
   car.getWorldPosition(oldObjectPosition);
 
   if (accelerate && !wasReversing) {
@@ -301,11 +349,11 @@ function animation(timestamp) {
   }
 
   if (left) {
-    car.rotation.y = (car.rotation.y + (speed / 10) * Math.PI) % (2 * Math.PI);
+    car.rotation.y = (car.rotation.y + (speed / 20) * Math.PI) % (2 * Math.PI);
   }
 
   if (right) {
-    car.rotation.y = (car.rotation.y - (speed / 10) * Math.PI) % (2 * Math.PI);
+    car.rotation.y = (car.rotation.y - (speed / 20) * Math.PI) % (2 * Math.PI);
   }
 
   if (true) {
@@ -333,15 +381,10 @@ function animation(timestamp) {
     }
 
     car.position.x = car.position.x + xMagnitude;
-    car.position.z = car.position.z + zMagnitude;
+    car.position.z = car.position.z + zMagnitude; 
 
-    const newObjectPosition = new THREE.Vector3();
     car.getWorldPosition(newObjectPosition);
-
-    const delta = newObjectPosition.clone().sub(oldObjectPosition);
-
-    camera.position.add(delta);
-    // }
+    camera.position.add(newObjectPosition.clone().sub(oldObjectPosition));
 
     renderer.render(scene, camera);
     lastTimeStamp = timestamp;
@@ -350,57 +393,57 @@ function animation(timestamp) {
 
 console.log("hELOO");
 
-function renderMap(mapWidth, mapHeight) {
-  const lineMarkingsTexture = getLineMarkings(mapWidth, mapHeight);
+// function renderMap(mapWidth, mapHeight) {
+//   const lineMarkingsTexture = getLineMarkings(mapWidth, mapHeight);
 
-  const planeGeometry = new THREE.PlaneBufferGeometry(mapWidth, mapHeight);
-  const planeMaterial = new THREE.MeshLambertMaterial({
-    // color: #f57f23,
-    map: lineMarkingsTexture,
-  });
-  const plane = new THREE.Mesh(planeGeometry, planeMaterial);
-  scene.add(plane);
+//   const planeGeometry = new THREE.PlaneBufferGeometry(mapWidth, mapHeight);
+//   const planeMaterial = new THREE.MeshLambertMaterial({
+//     // color: #f57f23,
+//     map: lineMarkingsTexture,
+//   });
+//   const plane = new THREE.Mesh(planeGeometry, planeMaterial);
+//   scene.add(plane);
 
-  const islandLeft = getLeftIsland();
+//   const islandLeft = getLeftIsland();
 
-  return;
-}
+//   return;
+// }
 
-function getLineMarkings(mapWidth, mapHeight) {
-  const canvas = document.createElement("canvas");
-  canvas.width = mapWidth;
-  canvas.height = mapHeight;
-  const context = canvas.getContext("2d");
+// function getLineMarkings(mapWidth, mapHeight) {
+//   const canvas = document.createElement("canvas");
+//   canvas.width = mapWidth;
+//   canvas.height = mapHeight;
+//   const context = canvas.getContext("2d");
 
-  context.fillStyle = "#546E90";
-  context.fillRect(0, 0, mapWidth, mapHeight);
+//   context.fillStyle = "#546E90";
+//   context.fillRect(0, 0, mapWidth, mapHeight);
 
-  context.lineWidth = 2;
-  context.strokeStyle = "#e0ffff";
-  context.setLineDash([10, 14]);
+//   context.lineWidth = 2;
+//   context.strokeStyle = "#e0ffff";
+//   context.setLineDash([10, 14]);
 
-  context.beginPath();
-  context.arc(
-    mapWidth / 2 - arcCenterX,
-    mapHeight / 2,
-    trackRadius,
-    0,
-    Math.PI * 2
-  );
-  context.stroke();
+//   context.beginPath();
+//   context.arc(
+//     mapWidth / 2 - arcCenterX,
+//     mapHeight / 2,
+//     trackRadius,
+//     0,
+//     Math.PI * 2
+//   );
+//   context.stroke();
 
-  context.beginPath();
-  context.arc(
-    mapWidth / 2 + arcCenterX,
-    mapHeight / 2,
-    trackRadius,
-    0,
-    Math.PI * 2
-  );
-  context.stroke();
+//   context.beginPath();
+//   context.arc(
+//     mapWidth / 2 + arcCenterX,
+//     mapHeight / 2,
+//     trackRadius,
+//     0,
+//     Math.PI * 2
+//   );
+//   context.stroke();
 
-  return new THREE.CanvasTexture(canvas);
-}
+//   return new THREE.CanvasTexture(canvas);
+// }
 
 function createWheels() {
   const geometry = new THREE.BoxBufferGeometry(12, 12, 33);
@@ -449,7 +492,7 @@ function createCar() {
   cabin.position.x = -6;
   cabin.position.y = 25.5;
   car.add(cabin);
-  car.rotation.y = - Math.PI / 2;
+  car.rotation.y = -Math.PI / 2;
 
   return car;
 }
